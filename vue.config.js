@@ -1,5 +1,7 @@
+const { resolve } = require("path");
 const path = require("path");
 const speedMeasurePlugin = require("speed-measure-webpack-plugin");
+const webpack = require("webpack");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 console.log(process.env.MEASURE, "measure");
 const smp = new speedMeasurePlugin({
@@ -32,6 +34,10 @@ module.exports = {
       new BundleAnalyzerPlugin({
         analyzerMode: process.env.MEASURE === "true" ? "server" : "disabled",
       }),
+      // new webpack.DllReferencePlugin({
+      //   context: __dirname,
+      //   manifest: resolve(__dirname, "./dll/vue-manifest.json"),
+      // }),
     ],
   }),
 };
