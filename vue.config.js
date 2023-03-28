@@ -20,6 +20,7 @@ module.exports = {
   parallel: true,
   configureWebpack: smp.wrap({
     cache: {
+      // webpack  4 要使用物理缓存则用 hard-source-webpack-plugin  这个插件。 webpack 5 在这里内置实现了。
       type: "filesystem",
       cacheDirectory: resolve(__dirname, "./node_modules/.cache_temp"),
       name: "vue_elm",
