@@ -5,7 +5,11 @@ const webpack = require("webpack");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const AddAssetWebpackHtmlPlugin = require("add-asset-html-webpack-plugin");
-
+const glob = require("glob");
+const { PurgeCSSPlugin } = require("purgecss-webpack-plugin");
+const PATHS = {
+  src: path.join(__dirname, "src"),
+};
 console.log(process.env.MEASURE, "measure");
 const smp = new speedMeasurePlugin({
   outputFormat: "humanVerbose",
@@ -68,6 +72,9 @@ module.exports = {
       ],
     },
     plugins: [
+      new PurgeCSSPlugin({
+        paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
+      }),
       new AddAssetWebpackHtmlPlugin({
         filepath: resolve(__dirname, "./dll/vue.dll.js"), // 注意引入时机， 生成后再引入。
       }),
