@@ -3,6 +3,9 @@ const path = require("path");
 const speedMeasurePlugin = require("speed-measure-webpack-plugin");
 const webpack = require("webpack");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const AddAssetWebpackHtmlPlugin = require("add-asset-html-webpack-plugin");
+
 console.log(process.env.MEASURE, "measure");
 const smp = new speedMeasurePlugin({
   outputFormat: "humanVerbose",
@@ -31,13 +34,24 @@ module.exports = {
       // ],
     },
     plugins: [
+      new AddAssetWebpackHtmlPlugin({
+        filepath: resolve(__dirname, "./dll/vue.dll.js"), // 注意引入时机， 生成后再引入。
+      }),
       new BundleAnalyzerPlugin({
         analyzerMode: process.env.MEASURE === "true" ? "server" : "disabled",
       }),
-      // new webpack.DllReferencePlugin({
-      //   context: __dirname,
-      //   manifest: resolve(__dirname, "./dll/vue-manifest.json"),
-      // }),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: resolve(__dirname, "./dll/vue.dll.js"),
+            to: resolve(__dirname, "./dist/js/vue.dll.js"),
+          },
+        ],
+      }),
+      new webpack.DllReferencePlugin({
+        context: __dirname,
+        manifest: resolve(__dirname, "./dll/vue-manifest.json"),
+      }),
     ],
   }),
 };
