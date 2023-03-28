@@ -19,6 +19,7 @@ module.exports = {
       type: "filesystem",
       cacheDirectory: resolve(__dirname, "./node_modules/.cache_temp"),
       name: "vue_elm",
+      // cacheLocation: resolve(__dirname, )
     },
     resolve: {
       alias: {
@@ -28,15 +29,43 @@ module.exports = {
       },
     },
     module: {
-      // rules: [
-      //   {
-      //     test: /\.js$/,
-      //     loader: "thread-loader",
-      //     options: {
-      //       worker: 5,
-      //     },
-      //   },
-      // ],
+      rules: [
+        //   {
+        //     test: /\.js$/,
+        //     loader: "thread-loader",
+        //     options: {
+        //       worker: 5,
+        //     },
+        //   },
+        {
+          test: /\.(gif|png|jpe?g|svg)$/i,
+          use: [
+            {
+              loader: "image-webpack-loader",
+              options: {
+                mozjpeg: {
+                  progressive: true,
+                },
+                // optipng.enabled: false will disable optipng
+                optipng: {
+                  enabled: false,
+                },
+                pngquant: {
+                  quality: [0.65, 0.9],
+                  speed: 4,
+                },
+                gifsicle: {
+                  interlaced: false,
+                },
+                // the webp option will enable WEBP
+                webp: {
+                  quality: 75,
+                },
+              },
+            },
+          ],
+        },
+      ],
     },
     plugins: [
       new AddAssetWebpackHtmlPlugin({
