@@ -15,6 +15,11 @@ const smp = new speedMeasurePlugin({
 module.exports = {
   parallel: true,
   configureWebpack: smp.wrap({
+    cache: {
+      type: "filesystem",
+      cacheDirectory: resolve(__dirname, "./node_modules/.cache_temp"),
+      name: "vue_elm",
+    },
     resolve: {
       alias: {
         src: path.resolve(__dirname, "./src"),
